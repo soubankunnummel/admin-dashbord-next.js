@@ -18,6 +18,8 @@ import Image from "next/image";
 import { CustomSeparator } from "@/components/ui/separator";
 import { useAdminRegister } from "@/hooks/useAuth";
 import Link from "next/link";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 // Define your form schema with validation
 const formSchema = z
@@ -45,6 +47,7 @@ const formSchema = z
   });
 
 export default function Register() {
+
   // Initialize form with validation
   const form = useForm({
     resolver: zodResolver(formSchema),
@@ -56,6 +59,7 @@ export default function Register() {
       confirm_password: "",
     },
   });
+  const router = useRouter();
 
   const registerMutaioin = useAdminRegister();
   // Handle form submission
@@ -64,8 +68,10 @@ export default function Register() {
     try {
       const response = await registerMutaioin.mutateAsync(values);
       console.log(response);
-    } catch (error) {
-      console.log(error);
+      toast.success("Register Success");
+      setTimeout(() => router.push("/login"), 2000);
+    } catch (error:any) {
+      toast.error(error.response?.data?.message || "Registration failed.");
     }
   }
 
@@ -163,7 +169,7 @@ export default function Register() {
                   className="font-bold text-xl rounded-xl bg-[#199FB1] hover:bg-[#168a99]"
                   size={"lg"}
                 >
-                  Create Account
+                 {form.formState.isSubmitting ? "Registering..." : "Create Account"}
                 </Button>
                 <p className="text-base font-medium text-[#7CB5EC] cursor-pointer">
                 <Link href="/login">Already have an account?</Link>

@@ -13,7 +13,7 @@ export default function layout({ children }: { children: React.ReactNode }) {
         alt="logo"
         className=" absolute top-0 -z-50 w-full "
       />
-      <div className="flex   gap-4 md:px-32 md:py-10 w-full  ">
+      <div className="flex relative h-full min-h-screen    gap-4 p-5  md:px-32 md:py-10 w-full  ">
         <Sidebar />
         <div className="flex flex-col w-full h-full ">
           <NavBar />
@@ -24,3 +24,4 @@ export default function layout({ children }: { children: React.ReactNode }) {
     </div>
   );
 }
+

@@ -13,7 +13,7 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { Check, X } from "lucide-react";
+import { Check, MoreHorizontal, X } from "lucide-react";
 import { VscSettings } from "react-icons/vsc";
 
 import { Button } from "@/components/ui/button";
@@ -41,14 +41,18 @@ import { RatingStars } from "../rating-stars";
 const data: Payment[] = [
   {
     name: "Yeray Rosalos",
-    comment: "Very good work",
+    sold: 2,
+    bought: 1,
+    blocked: false,
     rating: 3,
     Action: true,
     date_time: "July 3, 2023 12:29 pm",
   },
   {
     name: "Talah Cotton",
-    comment: "Very good work",
+    sold: 2,
+    bought: 1,
+    blocked: true,
     rating: 5,
     Action: null,
     date_time: "July 3, 2023 12:29 pm",
@@ -57,7 +61,9 @@ const data: Payment[] = [
 
 export type Payment = {
   name: string;
-  comment: string;
+  sold: number;
+  bought: number;
+  blocked: boolean;
   rating: number;
   Action: boolean | null;
   date_time: string;
@@ -105,11 +111,16 @@ export const columns: ColumnDef<Payment>[] = [
     ),
   },
   {
-    accessorKey: "comment",
-    header: "Comment",
-    cell: ({ row }) => (
-      <div className="lowercase">{row.getValue("comment")}</div>
-    ),
+    header: "User Deal",
+    cell: ({ row }) => {
+      const { sold, bought } = row.original;
+      return (
+        <div className="text-base ">
+          <p className=" text-[#FF0838]"> {sold} Sold </p>
+          <p className=" text-[#0FD43E] ">{bought} Bought </p>
+        </div>
+      );
+    },
   },
 
   {
@@ -130,38 +141,32 @@ export const columns: ColumnDef<Payment>[] = [
     header: "Action",
     enableHiding: false,
     cell: ({ row }) => {
-      const actionDone = row.getValue("action_done") as boolean;
-      const actions = row.getValue("Action") as boolean;
-      console.log("action", !actions);
-      console.log("actionDone", actionDone);
-
       return (
-        <div className="flex gap-3">
-          {actions === null ? (
-            <>
-              <button className="bg-[#FFCC40] text-white p-1 rounded-xl">
-                <Check />
-              </button>
-              <button className="p-1 text-white bg-[#FF0838] rounded-xl">
-                <X />
-              </button>
-            </>
-          ) : actions ? (
-            <button className="bg-[#0FD43E] p-2 rounded-xl text-white text-lg">
-              Approved
-            </button>
-          ) : (
-            <button className="bg-[#FF0838] p-2 px-3 rounded-xl text-white text-lg">
-              Declined
-            </button>
-          )}
-        </div>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="ghost" className="h-8 w-8 p-0">
+              <span className="sr-only">Open menu</span>
+              <MoreHorizontal className="text-[#199FB1] text-xl" size={30} />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent
+            align="end"
+            className="py-3 px-2  bg-[#D9D9D9]  "
+          >
+            <DropdownMenuItem className="bg-[#199FB1] py-3 text-white rounded-xl  ">
+              View in Detaile
+            </DropdownMenuItem>
+            <DropdownMenuItem className="text-[#FF0838] mt-1 py-3 hover:!bg-[#FF0838] rounded-xl hover:!text-white ">
+              Send Notification
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
       );
     },
   },
 ];
 
-export function RatingAndReviewTable() {
+export function UserManagementTable({ isSearch = true, isTitle = false }) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
@@ -191,62 +196,57 @@ export function RatingAndReviewTable() {
   });
   const handleSearch = () => {
     const [user, date_time, Action] = searchInput.split(" ");
+    table.getColumn("user")?.setFilterValue(user || "");
     table.getColumn("date_time")?.setFilterValue(date_time || "");
+    table.getColumn("Action")?.setFilterValue(Action || "");
   };
 
   return (
     <div className="w-full bg-white p-4 rounded-xl">
-      <div className="flex items-center  justify-between py-4">
-        <div className=" w-full flex items-center">
-          {/* <h1 className="text-xl  font-semibold ">Activity History</h1> */}
-          <p className="text-[#7F7F7F] text-base  "> All ( 877 )</p>
-          <p className="text-[#199FB1] text-base mx-2 ">
-            {" "}
-            Approved ( 500 )
-          </p>{" "}
-          <span className="text-[#7F7F7F] "> |</span>{" "}
-          <p className="text-[#199FB1] text-base mx-2 "> Pending ( 377 )</p>
-        </div>
-        <div className="flex w-full items-center justify-end gap-10">
-          <div className="relative md:max-w-[463px] w-full lg:block hidden ">
-            <Input
-              placeholder="Search Review by Date"
-              value={searchInput}
-              onChange={(event) => setSearchInput(event.target.value)}
-              className="max-w-sm   bg-[#E3E3E3] "
-            />
-            <div
-              className="bg-[#199FB1]  text-white px-8 cursor-pointer font-semibold p-[4px] text-lg rounded-xl absolute right-0 top-0  "
-              onClick={handleSearch}
-            >
-              {" "}
-              Search
-            </div>{" "}
+      {isTitle && <h1> User Management </h1>}
+      <div className="flex items-center  justify-end py-4">
+        {isSearch && (
+          <div className="flex w-full items-center justify-end gap-10">
+            <div className="relative md:max-w-[463px] w-full lg:block hidden ">
+              <Input
+                placeholder="Search user by their name"
+                value={searchInput}
+                onChange={(event) => setSearchInput(event.target.value)}
+                className="max-w-sm   bg-[#E3E3E3] "
+              />
+              <div
+                className="bg-[#199FB1]  text-white px-8 cursor-pointer font-semibold p-[4px] text-lg rounded-xl absolute right-0 top-0  "
+                onClick={handleSearch}
+              >
+                {" "}
+                Search
+              </div>{" "}
+            </div>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" className="h-10 w-10 p-0">
+                  <span className="sr-only">Open menu</span>
+                  {/* <MoreHorizontal /> */}
+                  <VscSettings className="text-[#199FB1] text-xl  " size={30} />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent
+                align="end"
+                className="py-5 px-2 text-center  bg-[#D9D9D9]  "
+              >
+                <DropdownMenuItem className="bg-[#FFCC40] py-3   text-black rounded-xl  ">
+                  Failed
+                </DropdownMenuItem>
+                <DropdownMenuItem className="text-black bg-[#0FD43E] mt-1 py-3   rounded-xl   ">
+                  Log in
+                </DropdownMenuItem>
+                <DropdownMenuItem className=" bg-[#FF0838] mt-1 py-3     rounded-xl   ">
+                  Log out
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="h-10 w-10 p-0">
-                <span className="sr-only">Open menu</span>
-                {/* <MoreHorizontal /> */}
-                <VscSettings className="text-[#199FB1] text-xl  " size={30} />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent
-              align="end"
-              className="py-5 px-2 text-center  bg-[#D9D9D9]  "
-            >
-              <DropdownMenuItem className="bg-[#FFCC40] py-3   text-black rounded-xl  ">
-                Failed
-              </DropdownMenuItem>
-              <DropdownMenuItem className="text-black bg-[#0FD43E] mt-1 py-3   rounded-xl   ">
-                Log in
-              </DropdownMenuItem>
-              <DropdownMenuItem className=" bg-[#FF0838] mt-1 py-3     rounded-xl   ">
-                Log out
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </div>
+        )}
       </div>
       <div className="rounded-md  ">
         <Table>

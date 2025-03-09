@@ -1,33 +1,17 @@
 import Image from "next/image";
 import React from "react";
+import { TotalSellers } from "./total-sellers";
+import { ActiveUsers } from "./active-users";
+import { TotalAds } from "./total-ads";
+import { TotalBuyers } from "./total-buyers";
 
 export default function LineGraph() {
   return (
-    <div className="grid grid-cols-2 gap-6 mb-5 ">
-      <Image
-        src="/assets/images/dashbord/graph-1.png"
-        width={300}
-        height={300}
-        alt="logo"
-      />
-      <Image
-        src="/assets/images/dashbord/graph-1.png"
-        width={300}
-        height={300}
-        alt="logo"
-      />
-      <Image
-        src="/assets/images/dashbord/graph-1.png"
-        width={300}
-        height={300}
-        alt="logo"
-      />
-      <Image
-        src="/assets/images/dashbord/graph-1.png"
-        width={300}
-        height={300}
-        alt="logo"
-      />
+    <div className="grid lg:w-1/2  grid-cols-2 gap-6 mb-5 ">
+      <ActiveUsers/>
+      <TotalBuyers/>
+      <TotalAds/>
+      <TotalSellers/>
     </div>
   );
 }

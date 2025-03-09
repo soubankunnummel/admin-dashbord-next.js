@@ -6,7 +6,7 @@ import React, { useEffect, useRef, useState } from "react";
 import Paginations from "../pagination";
 import Action from "../action";
 
-export default function UserManagement({
+export default function HistoryTable({
   users,
   isSerch = true,
 }: {
@@ -76,14 +76,14 @@ export default function UserManagement({
                 <input type="checkbox" className=" w-4 h-4" />
               </th>
               <th className="text-left">Name</th>
-              <th className="text-center">User Deal</th>
-              <th className="text-center">Block / Unblock</th>
-              <th className="text-center">Ratings</th>
-              <th className="text-center w-16">Actions</th>
+              <th className="text-center">Action</th>
+              <th className="text-center">Date & Time</th>
+              <th className="text-center">React</th>
+              {/* <th className="text-center w-16">Actions</th> */}
             </tr>
           </thead>
 
-          <tbody className="">
+          <tbody className="relative">
             {users.map((user: any, index: number) => (
               <tr
                 key={user.id}
@@ -114,37 +114,13 @@ export default function UserManagement({
                   </div>
                 </td>
                 <td className="text-center">
-                  <span className="text-red-500 block">{user.sold} Sold</span>
-                  <span className="text-green-500 block">
-                    {user.bought} Bought
-                  </span>
+                  <p> {user.action} </p>
                 </td>
                 <td className="text-center">
-                  <button
-                    className={`btn ${
-                      user.blocked
-                        ? "bg-[#FF0838] text-white p-3 rounded-xl"
-                        : "border border-[#FF8553] text-[#FF8553] px-6 py-2 rounded-xl"
-                    } btn-sm`}
-                  >
-                    {user.blocked ? "Unblock" : "Block"}
-                  </button>
+                <p>{user.date_time} </p>
                 </td>
-                <td className="text-center">
-                  {Array.from({ length: 5 }).map((_, index) => (
-                    <span
-                      key={index}
-                      className={`text-xl ${
-                        index < user.rating
-                          ? "text-yellow-400"
-                          : "text-gray-300"
-                      }`}
-                    >
-                      ★
-                    </span>
-                  ))}
-                </td>
-                <td className="text-center relative">
+                 
+                <td className="text-center ">
                   <button
                     className="btn btn-ghost rotate-90 btn-sm"
                     onClick={() => handleActoin(index)}
@@ -162,7 +138,7 @@ export default function UserManagement({
           </tbody>
         </table>
 
-        {/* <Paginations /> */}
+        <Paginations />
       </div>
     </div>
   );

@@ -1,7 +1,7 @@
 import Axios from "axios";
 
 const api = Axios.create({
-  baseURL: `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:2018/api/v1/admin/'}`,
+  baseURL: `${process.env.NEXT_PUBLIC_API_URL || 'https://mamun-reza-freeshops-backend.vercel.app/api/v1/admin/'}`,
   headers: {
     "Content-Type": "application/json",
     Authorization: `Bearer ${process.env.NEXT_PUBLIC_TOKEN}`,
@@ -23,7 +23,10 @@ api.interceptors.request.use(
       localStorage.removeItem("token");
       if (typeof window !== "undefined") {
         window.location.href = "/login";
-      }
+      } 
+
+
+
     }
     Promise.reject(error);
   }

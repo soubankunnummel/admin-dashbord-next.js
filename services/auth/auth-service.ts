@@ -6,7 +6,7 @@ import { User } from "@/types/user";
 
 const authService = {
   register: async (data: User) => {
-    const response = await api.post(`/register`, data);
+    const response = await api.post(`/registration`, data);
     return response.data;
   },
 

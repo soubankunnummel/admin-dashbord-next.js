@@ -20,11 +20,13 @@ import { CustomSeparator } from "@/components/ui/separator";
 import Link from "next/link";
 import { useAdminLogin } from "@/hooks/useAuth";
 import { toast } from "sonner";
+import { LoaderCircle } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 // Define your form schema with validation
 const formSchema = z.object({
-  username: z.string().min(2, {
-    message: "Username must be at least 2 characters.",
+  email: z.string().min(2, {
+    message: "Email must be at least 2 characters.",
   }),
   password: z.string().min(6, {
     message: "Password must be at least 6 characters.",
@@ -32,18 +34,19 @@ const formSchema = z.object({
 });
 
 export default function Login() {
+  const router = useRouter();
   // Initialize form with validation
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      username: "",
+      email: "",
       password: "",
     },
   });
 
   // Handle form submission
   interface FormValues {
-    username: string;
+    email: string;
     password: string;
   }
   const loginMutaioin = useAdminLogin();
@@ -54,8 +57,10 @@ export default function Login() {
       const response = await loginMutaioin.mutateAsync(values);
       toast.success("Login Success");
       localStorage.setItem("token", response.accessToken);
+      setTimeout(() => router.push("/welcome"), 2000);
       console.log(response);
     } catch (error: any) {
+
       toast.error(error.message);
     }
   }
@@ -94,10 +99,10 @@ export default function Login() {
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
               <FormField
                 control={form.control}
-                name="username"
+                name="email"
                 render={({ field }) => (
                   <FormItem className="mt-8">
-                    <FormLabel>User Name</FormLabel>
+                    <FormLabel> Email</FormLabel>
                     <FormControl>
                       <Input {...field} />
                     </FormControl>
@@ -117,7 +122,8 @@ export default function Login() {
                   className=" font-bold text-xl rounded-xl bg-[#199FB1] hover:bg-[#168a99] text-center "
                   size={"lg"}
                 >
-                  Login
+                  
+                  { loginMutaioin.isPending ?<LoaderCircle/> : "Login"}
                 </Button>
               </div>
               <p className="text-base font-medium  text-[#7CB5EC] text-center mt-14 cursor-pointer">
