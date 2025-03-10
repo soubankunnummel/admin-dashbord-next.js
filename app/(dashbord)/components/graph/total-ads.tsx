@@ -36,10 +36,13 @@ const chartConfig = {
 
 export function TotalAds() {
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Total Ads </CardTitle>
+    <Card className="relative  ">
+      <CardHeader className="w-full">
+        <CardTitle className="text-start">Total Ads </CardTitle>
       </CardHeader>
+      <h1 className="text-3xl left-1/3 z-10 text-[#FFCC40] font-bold absolute top-1/2 transform -translate-y-1/2">
+      459
+      </h1>
       <CardContent className="p-0">
         <ChartContainer config={chartConfig}>
           <AreaChart

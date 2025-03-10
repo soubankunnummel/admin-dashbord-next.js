@@ -43,10 +43,11 @@ const chartConfig = {
 
 export function TotalBuyers() {
   return (
-    <Card className="">
+    <Card className="relative">
       <CardHeader>
         <CardTitle> Total Buyers</CardTitle>
       </CardHeader>
+      <h1 className="text-3xl left-1/3 text-[#0FD43E] font-bold absolute transform -translate-y-1/2   top-1/2   ">3480</h1>
       <CardContent className="  p-0">
         <ChartContainer className=" " config={chartConfig}>
           <AreaChart

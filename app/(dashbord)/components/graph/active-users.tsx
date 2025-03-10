@@ -27,16 +27,17 @@ const chartData = [
 const chartConfig = {
   desktop: {
     label: "Desktop",
-    color: "hsl(var(--chart-1))",
+    color: "#199FB1",
   },
 } satisfies ChartConfig;
 
 export function ActiveUsers() {
   return (
-    <Card className=" ">
+    <Card className=" relative">
       <CardHeader>
         <CardTitle>Active Users</CardTitle>
       </CardHeader>
+      <h1 className="text-3xl left-1/3 text-[#199FB1] font-bold absolute transform -translate-y-1/2   top-1/2   ">5556</h1>
       <CardContent className="p-0">
         <ChartContainer className="" config={chartConfig}>
           <AreaChart

@@ -1,20 +1,14 @@
-"use client"
+"use client";
 
-import { Area, AreaChart, CartesianGrid,   } from "recharts"
+import { Area, AreaChart, CartesianGrid } from "recharts";
 
-import {
-  Card,
-  CardContent,
- 
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   ChartConfig,
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
-} from "@/components/ui/chart"
+} from "@/components/ui/chart";
 const chartData = [
   { month: "January", desktop: 100 },
   { month: "February", desktop: 300 },
@@ -25,23 +19,24 @@ const chartData = [
   { month: "July", desktop: 350 },
   { month: "August", desktop: 600 },
   { month: "September", desktop: 900 },
-
-]
+];
 
 const chartConfig = {
   desktop: {
     label: "Desktop",
     color: "#FF0838",
   },
-} satisfies ChartConfig
+} satisfies ChartConfig;
 
 export function TotalSellers() {
   return (
-    <Card className=" ">
+    <Card className=" relative">
       <CardHeader>
         <CardTitle>Total Sellers</CardTitle>
-        
       </CardHeader>
+      <h1 className="text-3xl left-1/3 text-[#FF0838] font-bold absolute transform -translate-y-1/2   top-1/2   ">
+        3480
+      </h1>
       <CardContent className="p-0">
         <ChartContainer config={chartConfig}>
           <AreaChart
@@ -53,13 +48,7 @@ export function TotalSellers() {
             }}
           >
             <CartesianGrid vertical={false} />
-            {/* <XAxis
-              dataKey="month"
-              tickLine={false}
-              axisLine={false}
-              tickMargin={8}
-              tickFormatter={(value) => value.slice(0, 3)}
-            /> */}
+
             <ChartTooltip
               cursor={false}
               content={<ChartTooltipContent indicator="line" />}
@@ -74,7 +63,6 @@ export function TotalSellers() {
           </AreaChart>
         </ChartContainer>
       </CardContent>
-      
     </Card>
-  )
+  );
 }
