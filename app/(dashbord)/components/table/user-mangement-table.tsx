@@ -13,7 +13,7 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { Check, MoreHorizontal, X } from "lucide-react";
+import {   MoreHorizontal } from "lucide-react";
 import { VscSettings } from "react-icons/vsc";
 
 import { Button } from "@/components/ui/button";
@@ -140,7 +140,7 @@ export const columns: ColumnDef<Payment>[] = [
     accessorKey: "Action",
     header: "Action",
     enableHiding: false,
-    cell: ({ row }) => {
+    cell: ( ) => {
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>

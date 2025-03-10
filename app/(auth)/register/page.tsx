@@ -20,6 +20,8 @@ import { useAdminRegister } from "@/hooks/useAuth";
 import Link from "next/link";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { Spinner } from "@/components/ui/spinner";
+import { CustomError } from "@/types/user";
 
 // Define your form schema with validation
 const formSchema = z
@@ -70,8 +72,9 @@ export default function Register() {
       console.log(response);
       toast.success("Register Success");
       setTimeout(() => router.push("/login"), 2000);
-    } catch (error:any) {
-      toast.error(error.response?.data?.message || "Registration failed.");
+    } catch (error) {
+      const customError = error as CustomError;
+      toast.error(customError.response?.data?.message || "Registration failed.");
     }
   }
 
@@ -169,7 +172,7 @@ export default function Register() {
                   className="font-bold text-xl rounded-xl bg-[#199FB1] hover:bg-[#168a99]"
                   size={"lg"}
                 >
-                 {form.formState.isSubmitting ? "Registering..." : "Create Account"}
+                 {form.formState.isSubmitting ? <Spinner className="text-white"/> : "Create Account"}
                 </Button>
                 <p className="text-base font-medium text-[#7CB5EC] cursor-pointer">
                 <Link href="/login">Already have an account?</Link>

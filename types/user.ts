@@ -13,3 +13,18 @@ export interface User {
     };
     accessToken: string;
   }
+
+  export interface Profile {
+    username: string;
+    email: string;
+    phone: string;
+    password: string;
+  }
+
+  export interface CustomError extends Error {
+    response?: {
+      data?: {
+        message?: string;
+      };
+    };
+  }

@@ -3,6 +3,7 @@ import localFont from "next/font/local";
 import "./globals.css";
 import TanstakProvider from "@/context/tanstak-provider";
 import { Toaster } from "sonner";
+import ProtectRoute from "./(auth)/components/protect-rout";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -30,8 +31,10 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <Toaster/> 
-        <TanstakProvider>{children}</TanstakProvider>
+        <ProtectRoute>
+          <Toaster />
+          <TanstakProvider>{children}</TanstakProvider>
+        </ProtectRoute>
       </body>
     </html>
   );

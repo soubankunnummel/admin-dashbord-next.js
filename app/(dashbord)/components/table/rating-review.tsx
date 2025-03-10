@@ -190,7 +190,7 @@ export function RatingAndReviewTable() {
     },
   });
   const handleSearch = () => {
-    const [user, date_time, Action] = searchInput.split(" ");
+    const [date_time] = searchInput.split(" ");
     table.getColumn("date_time")?.setFilterValue(date_time || "");
   };
 

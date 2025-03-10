@@ -1,7 +1,6 @@
 "use client";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { IoReorderThreeOutline } from "react-icons/io5";
 
@@ -70,7 +69,6 @@ export default function Sidebar() {
     //   href: "/google-map",
     // },
   ];
-  const router = useRouter();
   const [open, setOpen] = useState(false);
   
 

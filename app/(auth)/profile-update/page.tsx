@@ -10,22 +10,65 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { PasswordField } from "@/components/ui/password-field";
+import { Spinner } from "@/components/ui/spinner";
+import { useProfileUpdate } from "@/hooks/useUser";
+import { CustomError, User } from "@/types/user";
+import { zodResolver } from "@hookform/resolvers/zod";
+ 
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import React from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+import { z } from "zod";
+
+const formSchema = z.object({
+  username: z.string().min(2, {
+    message: "Username must be at least 2 characters.",
+  }),
+  email: z.string().min(2, {
+    message: "Email must be at least 2 characters.",
+  }),
+  phone: z.string().min(2, {
+    message: "Phone number must be at least 2 characters.",
+  }),
+  password: z.string().min(6, {
+    message: "Password must be at least 6 characters.",
+  }),
+})
 
 export default function ProfileUpdate() {
-  const form = useForm();
+  const form = useForm({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      username: "",
+      email: "",
+      phone: "",
+      password: "",
+    },
+  });
+  const router = useRouter();
 
-  const onSubmit = (values: any) => {
-    console.log(values);
+  const profile = useProfileUpdate();
+
+   const onSubmit = async (values: User) => {
+    try {
+       await profile.mutateAsync(values);
+      toast.success("Profile Updated Successfully");
+      setTimeout(() => router.push("/"), 2000);
+    } catch (error) {
+      const customError = error as CustomError;
+      toast.error(customError.response?.data?.message || "Profile Update Failed");
+      
+    }
   };
 
   return (
     <div className="flex flex-col items-center bg-white rounded-2xl p-6 md:p-10 w-full max-w-lg mx-auto shadow-md relative">
       {/* Profile Image Upload */}
-      <div className="flex justify-center items-center p-4 bg-gray-300 rounded-full">
+      <div className="flex justify-center relative cursor-pointer items-center p-4 bg-gray-300 rounded-full">
+        <input type="file" className="absolute z-20 w-full invisible  " name="" id="" />
         <Image
           src="/assets/icons/camera.png"
           width={35}
@@ -108,7 +151,7 @@ export default function ProfileUpdate() {
               className="w-full max-w-xs font-bold text-lg rounded-lg bg-teal-500 hover:bg-teal-600"
               size="lg"
             >
-              Save
+              { profile.isPending ?<Spinner/> : "Save"}
             </Button>
           </div>
         </form>

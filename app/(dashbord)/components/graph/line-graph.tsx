@@ -1,4 +1,3 @@
-import Image from "next/image";
 import React from "react";
 import { TotalSellers } from "./total-sellers";
 import { ActiveUsers } from "./active-users";

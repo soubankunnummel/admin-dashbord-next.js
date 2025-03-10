@@ -2,14 +2,15 @@ import React from "react";
 import {
   Pagination,
   PaginationContent,
-  PaginationEllipsis,
   PaginationItem,
   PaginationLink,
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
 
-export default function Paginations({ table }: any) {
+ 
+
+export default function Paginations({ table }:any) {
   const pageCount = table.getPageCount();
   const currentPage = table.getState().pagination.pageIndex;
 

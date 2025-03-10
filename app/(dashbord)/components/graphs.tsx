@@ -1,5 +1,4 @@
 import React from "react";
-import Image from "next/image";
 import  LineGraph  from "./graph/line-graph";
 import { BarGraph } from "./graph/bar-graph";
 

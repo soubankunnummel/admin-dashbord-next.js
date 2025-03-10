@@ -1,10 +1,10 @@
 "use client";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
-import { Search } from "lucide-react";
 import React, { useEffect, useRef, useState } from "react";
 import Paginations from "../pagination";
 import Action from "../action";
+import Image from "next/image";
 
 export default function HistoryTable({
   users,
@@ -41,7 +41,6 @@ export default function HistoryTable({
   }, [open]);
 
   // Total users count (for demonstration - normally this would come from an API)
-  const totalUsersCount = 5556;
 
   return (
     <div className="p-6 bg-white rounded-lg shadow-lg">
@@ -99,10 +98,12 @@ export default function HistoryTable({
                   <div className="flex items-center gap-3">
                     <div className="avatar">
                       <div className="rounded-full h-12 w-12">
-                        <img
+                        <Image
                           src={user.avatar}
                           alt={user.name}
                           className="rounded-full"
+                          width={40}
+                          height={40}
                         />
                       </div>
                     </div>

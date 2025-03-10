@@ -1,16 +1,7 @@
 "use client";
 
-import { TrendingUp } from "lucide-react";
-import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from "recharts";
+import { Bar, BarChart, CartesianGrid, XAxis } from "recharts";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
 import {
   ChartConfig,
   ChartContainer,
@@ -101,7 +92,7 @@ export function Month() {
           axisLine={false}
           tickFormatter={(value) => value.slice(0, 3)}
         />
-   
+
         <ChartTooltip
           cursor={false}
           content={<ChartTooltipContent indicator="dashed" />}

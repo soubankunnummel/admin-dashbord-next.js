@@ -20,8 +20,10 @@ import { CustomSeparator } from "@/components/ui/separator";
 import Link from "next/link";
 import { useAdminLogin } from "@/hooks/useAuth";
 import { toast } from "sonner";
-import { LoaderCircle } from "lucide-react";
+
 import { useRouter } from "next/navigation";
+import { Spinner } from "@/components/ui/spinner";
+import { CustomError } from "@/types/user";
 
 // Define your form schema with validation
 const formSchema = z.object({
@@ -56,12 +58,14 @@ export default function Login() {
     try {
       const response = await loginMutaioin.mutateAsync(values);
       toast.success("Login Success");
+      document.cookie = `token=${response.accessToken}; path=/;`;
       localStorage.setItem("token", response.accessToken);
       setTimeout(() => router.push("/welcome"), 2000);
       console.log(response);
-    } catch (error: any) {
-
-      toast.error(error.message);
+     
+    } catch (error) {
+      const customError = error as CustomError;
+      toast.error(customError.response?.data?.message || "Login failed.");
     }
   }
 
@@ -122,8 +126,7 @@ export default function Login() {
                   className=" font-bold text-xl rounded-xl bg-[#199FB1] hover:bg-[#168a99] text-center "
                   size={"lg"}
                 >
-                  
-                  { loginMutaioin.isPending ?<LoaderCircle/> : "Login"}
+                  {loginMutaioin.isPending ? <Spinner /> : "Login"}
                 </Button>
               </div>
               <p className="text-base font-medium  text-[#7CB5EC] text-center mt-14 cursor-pointer">
